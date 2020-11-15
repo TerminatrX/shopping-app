@@ -21,7 +21,7 @@ public class TotalCostCalculationTest {
     @DisplayName("Cart Below $50 w/No Tax w/Standard Shipping")
     void below50NoTaxStandard(){
         double cost = TotalCostCalculator.calculate(10.00, "WA", ShippingType.STANDARD);
-        assertEquals(15.00, cost);
+        assertEquals(20.00, cost);
     }
 
     @Test
@@ -52,14 +52,14 @@ public class TotalCostCalculationTest {
     @DisplayName("Cart Below $50 w/Tax w/Standard Shipping")
     void below50TaxStandard(){
         double cost = TotalCostCalculator.calculate(10.00, "IL", ShippingType.STANDARD);
-        assertEquals(15.00, cost);
+        assertEquals(21.60, cost);
     }
 
     @Test
     @DisplayName("Cart Above $50 w/Tax w/Standard Shipping")
     void above50TaxStandard() {
         double cost = TotalCostCalculator.calculate(60.00, "IL", ShippingType.STANDARD);
-        assertEquals(60.00, cost);
+        assertEquals(63.60, cost);
     }
 
     //Tax w/Next Day Shipping (+$25)
@@ -67,17 +67,18 @@ public class TotalCostCalculationTest {
         @DisplayName("Cart Below $50 w/Tax w/Next Day Shipping")
         void below50TaxNextDay(){
             double cost = TotalCostCalculator.calculate(10.00, "IL", ShippingType.NEXT_DAY);
-            assertEquals(35.00, cost);
+            assertEquals(35.60, cost);
         }
 
         @Test
         @DisplayName("Cart Above $50 w/Tax w/Next Day Shipping")
         void above50TaxNextDay(){
             double cost = TotalCostCalculator.calculate(60.00, "IL", ShippingType.NEXT_DAY);
-            assertEquals(85.00, cost);
+            assertEquals(88.60, cost);
         }
 
     //Weak Robust Tests
+
 
     //Boundary Tests
 }
