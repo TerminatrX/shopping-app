@@ -29,7 +29,7 @@ version = '0.0.1-SNAPSHOT'
 description = 'shopping-app'
 sourceCompatibility = '11'
 
-def user = 'dwalke30'
+def user = 'vnair'
 
 bootJar {
     mainClassName = 'edu.depaul.se433.shoppingapp.ShoppingAppApplication'
@@ -38,7 +38,7 @@ bootJar {
 def test = tasks.named("test") {
 
     useJUnitPlatform ()
-
+    ignoreFailures(true)
     afterTest { desc, result ->
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
