@@ -113,5 +113,18 @@ public class TotalCostCalculationTest {
 
     //Boundary Tests
 
+    @Test
+    @DisplayName("Below $50 for free shipping")
+    void below50FreeShipping() {
+        double cost = TotalCostCalculator.calculate(50.00, "IL", ShippingType.STANDARD);
+        assertEquals(60.00, cost);
+    }
+
+    @Test
+    @DisplayName("Above $50 for free shipping")
+    void above50FreeShipping() {
+        double cost = TotalCostCalculator.calculate(50.01, "IL", ShippingType.STANDARD);
+        assertEquals(50.01, cost);
+    }
 
 }
