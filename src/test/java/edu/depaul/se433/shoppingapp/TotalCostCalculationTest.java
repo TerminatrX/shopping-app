@@ -13,5 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 // In this file there will be Strong Normal Tests, Weak Robust Tests and Boundary Tests
 public class TotalCostCalculationTest {
 
+    //Strong Normal Tests
 
+    //Weak Robust Tests
+
+    //Boundary Tests
 }
