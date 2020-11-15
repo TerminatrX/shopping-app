@@ -78,7 +78,40 @@ public class TotalCostCalculationTest {
         }
 
     //Weak Robust Tests
+    @Test
+    @DisplayName("Negative Price")
+    void negativePrice() {
+        try {
+            double cost = TotalCostCalculator.calculate(-1.00, "IL", ShippingType.STANDARD);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assert(true);
+        }
+    }
 
+    @Test
+    @DisplayName("Shipping not described")
+    void shippingTypeNull() {
+        try {
+            double cost = TotalCostCalculator.calculate(20.00, "IL", null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    @DisplayName("State not given to calculate tax")
+    void unableToCalculateTax() {
+        try {
+            double cost = TotalCostCalculator.calculate(100.00, null, ShippingType.STANDARD);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assert(true);
+        }
+    }
 
     //Boundary Tests
+
+
 }
