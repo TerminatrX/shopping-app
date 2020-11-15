@@ -131,7 +131,7 @@ public class TotalCostCalculationTest {
     @DisplayName("Invalid Price for Purchase")
     void invalidPriceForPurchase() {
         try {
-            double costt = TotalCostCalculator.calculate(0.00, "IL", ShippingType.STANDARD);
+            double cost = TotalCostCalculator.calculate(0.00, "IL", ShippingType.STANDARD);
             fail();
         } catch (IllegalArgumentException e) {
             assert(true);
