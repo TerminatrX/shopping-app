@@ -55,6 +55,7 @@ task packageDistribution(type: Zip) {
     from("$projectDir") {
         include "src/**/*"
         include "build/reports/jacoco/**/*"
+        include "build/reports/pmd/**/*"
         include "build.gradle"
         include "gradlew"
         include "gradlew.bat"
