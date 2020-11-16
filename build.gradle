@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id "io.freefair.lombok" version "5.1.0"
     id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'jacoco'
 }
 
 repositories {
@@ -58,6 +59,20 @@ task packageDistribution(type: Zip) {
     }
 
     into("${user}-${rootProject.name}")
+}
+
+jacocoTestReport {
+    dependsOn test
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.2
+            }
+        }
+    }
 }
 
 check {
