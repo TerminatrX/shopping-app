@@ -14,6 +14,19 @@ public class ShoppingMocksDatabaseTest {
         PurchaseDBO mockPurchase = mock(PurchaseDBO.class);
         PurchaseAgent mockAgent = new PurchaseAgent(mockPurchase);
         ArrayList<Purchase> purchasesList = new ArrayList<>();
+
+        Purchase purchase1 = Purchase.make("Matthew", LocalDate.of(
+                2020, 11, 11), 25.00, "IL", "STANDARD");
+
+        Purchase purchase2 = Purchase.make("Daniel", LocalDate.of(
+                2020, 11, 11), 50.00, "IL", "NEXT_DAY");
+
+        purchasesList.add(purchase1);
+        purchasesList.add(purchase2);
+
+        when(mockPurchase.getPurchases()).thenReturn(purchasesList);
+        Double average = (purchase1.getCost() + purchase2.getCost()) / 2;
+        assertEquals(average, mockAgent.averagePurchase());
     }
 
     @Test
@@ -22,5 +35,18 @@ public class ShoppingMocksDatabaseTest {
         PurchaseDBO mockPurchase = mock(PurchaseDBO.class);
         PurchaseAgent mockAgent = new PurchaseAgent(mockPurchase);
         ArrayList<Purchase> purchasesList = new ArrayList<>();
+
+        Purchase purchase1 = Purchase.make("Matthew", LocalDate.of(
+                2020, 11, 11), 100.00, "AZ", "STANDARD");
+
+        Purchase purchase2 = Purchase.make("Daniel", LocalDate.of(
+                2020, 11, 11), 200.00, "AZ", "STANDARD");
+
+        purchasesList.add(purchase1);
+        purchasesList.add(purchase2);
+
+        when(mockPurchase.getPurchases()).thenReturn(purchasesList);
+        Double average = (purchase1.getCost() + purchase2.getCost()) / 2;
+        assertEquals(average, mockAgent.averagePurchase());
     }
 }
