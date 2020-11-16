@@ -52,7 +52,7 @@ public class TotalCostCalculationTest {
     @DisplayName("Cart Below $50 w/Tax w/Standard Shipping")
     void below50TaxStandard(){
         double cost = TotalCostCalculator.calculate(10.00, "IL", ShippingType.STANDARD);
-        assertEquals(21.60, cost);
+        assertEquals(20.60, cost);
     }
 
     @Test
