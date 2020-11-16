@@ -43,6 +43,7 @@ def test = tasks.named("test") {
     afterTest { desc, result ->
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
+    finalizedBy jacocoTestReport
 }
 
 task packageDistribution(type: Zip) {
@@ -52,6 +53,7 @@ task packageDistribution(type: Zip) {
 
     from("$projectDir") {
         include "src/**/*"
+        include "build/reports/jacoco/**/*"
         include "build.gradle"
         include "gradlew"
         include "gradlew.bat"
@@ -77,6 +79,9 @@ jacocoTestCoverageVerification {
 
 check {
     finalizedBy packageDistribution
+    dependsOn {
+        jacocoTestCoverageVerification
+    }
 }
 
 
