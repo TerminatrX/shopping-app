@@ -20,15 +20,31 @@ public class TotalCostCalculationTest {
     @Test
     @DisplayName("Cart Below $50 w/No Tax w/Standard Shipping")
     void below50NoTaxStandard(){
-        double cost = TotalCostCalculator.calculate(10.00, "WA", ShippingType.STANDARD);
-        assertEquals(20.00, cost);
+        PurchaseItem item = new PurchaseItem("Pen", 10, 1);
+        ShoppingCart cart = new ShoppingCart();
+        ShippingType shipping = ShippingType.STANDARD;
+        cart.addItem(item);
+
+        double tax = TaxCalculator.calculate(cart.cost(), "WA");
+        double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+        double cost = TotalCostCalculator.calculate(cart.cost(), "WA", ShippingType.STANDARD);
+        Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+        assertEquals(bill.total(), cost);
     }
 
     @Test
     @DisplayName("Cart Above $50 w/No Tax w/Standard Shipping")
     void above50NoTaxStandard(){
-        double cost = TotalCostCalculator.calculate(60.00, "WA", ShippingType.STANDARD);
-        assertEquals(60.00, cost);
+        PurchaseItem item = new PurchaseItem("Pen", 10, 6);
+        ShoppingCart cart = new ShoppingCart();
+        ShippingType shipping = ShippingType.STANDARD;
+        cart.addItem(item);
+
+        double tax = TaxCalculator.calculate(cart.cost(), "WA");
+        double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+        double cost = TotalCostCalculator.calculate(cart.cost(), "WA", ShippingType.STANDARD);
+        Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+        assertEquals(bill.total(), cost);
     }
 
     //No Tax w/Next Day Shipping (+$25)
@@ -36,45 +52,93 @@ public class TotalCostCalculationTest {
     @Test
     @DisplayName("Cart Below $50 w/No Tax w/Next Day Shipping")
     void below50NoTaxNextDay(){
-        double cost = TotalCostCalculator.calculate(10.00, "WA", ShippingType.NEXT_DAY);
-        assertEquals(35.00, cost);
+        PurchaseItem item = new PurchaseItem("Pen", 10, 1);
+        ShoppingCart cart = new ShoppingCart();
+        ShippingType shipping = ShippingType.NEXT_DAY;
+        cart.addItem(item);
+
+        double tax = TaxCalculator.calculate(cart.cost(), "WA");
+        double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+        double cost = TotalCostCalculator.calculate(cart.cost(), "WA", ShippingType.NEXT_DAY);
+        Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+        assertEquals(bill.total(), cost);
     }
 
     @Test
     @DisplayName("Cart Above $50 w/No Tax w/Next Day Shipping")
     void above50NoTaxNextDay(){
-        double cost = TotalCostCalculator.calculate(60.00, "WA", ShippingType.NEXT_DAY);
-        assertEquals(85.00, cost);
+        PurchaseItem item = new PurchaseItem("Pen", 10, 6);
+        ShoppingCart cart = new ShoppingCart();
+        ShippingType shipping = ShippingType.NEXT_DAY;
+        cart.addItem(item);
+
+        double tax = TaxCalculator.calculate(cart.cost(), "WA");
+        double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+        double cost = TotalCostCalculator.calculate(cart.cost(), "WA", ShippingType.NEXT_DAY);
+        Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+        assertEquals(bill.total(), cost);
     }
 
     //Tax w/ Standard Shipping
     @Test
     @DisplayName("Cart Below $50 w/Tax w/Standard Shipping")
     void below50TaxStandard(){
-        double cost = TotalCostCalculator.calculate(10.00, "IL", ShippingType.STANDARD);
-        assertEquals(20.60, cost);
+        PurchaseItem item = new PurchaseItem("Pen", 10, 1);
+        ShoppingCart cart = new ShoppingCart();
+        ShippingType shipping = ShippingType.STANDARD;
+        cart.addItem(item);
+
+        double tax = TaxCalculator.calculate(cart.cost(), "IL");
+        double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+        double cost = TotalCostCalculator.calculate(cart.cost(), "IL", ShippingType.STANDARD);
+        Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+        assertEquals(bill.total(), cost);
     }
 
     @Test
     @DisplayName("Cart Above $50 w/Tax w/Standard Shipping")
     void above50TaxStandard() {
-        double cost = TotalCostCalculator.calculate(60.00, "IL", ShippingType.STANDARD);
-        assertEquals(63.60, cost);
+        PurchaseItem item = new PurchaseItem("Pen", 10, 6);
+        ShoppingCart cart = new ShoppingCart();
+        ShippingType shipping = ShippingType.STANDARD;
+        cart.addItem(item);
+
+        double tax = TaxCalculator.calculate(cart.cost(), "IL");
+        double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+        double cost = TotalCostCalculator.calculate(cart.cost(), "IL", ShippingType.STANDARD);
+        Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+        assertEquals(bill.total(), cost);
     }
 
     //Tax w/Next Day Shipping (+$25)
         @Test
         @DisplayName("Cart Below $50 w/Tax w/Next Day Shipping")
         void below50TaxNextDay(){
-            double cost = TotalCostCalculator.calculate(10.00, "IL", ShippingType.NEXT_DAY);
-            assertEquals(35.60, cost);
+            PurchaseItem item = new PurchaseItem("Pen", 10, 1);
+            ShoppingCart cart = new ShoppingCart();
+            ShippingType shipping = ShippingType.NEXT_DAY;
+            cart.addItem(item);
+
+            double tax = TaxCalculator.calculate(cart.cost(), "IL");
+            double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+            double cost = TotalCostCalculator.calculate(cart.cost(), "IL", ShippingType.NEXT_DAY);
+            Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+            assertEquals(bill.total(), cost);
         }
 
         @Test
         @DisplayName("Cart Above $50 w/Tax w/Next Day Shipping")
         void above50TaxNextDay(){
-            double cost = TotalCostCalculator.calculate(60.00, "IL", ShippingType.NEXT_DAY);
-            assertEquals(88.60, cost);
+            PurchaseItem item = new PurchaseItem("Pen", 10, 6);
+            ShoppingCart cart = new ShoppingCart();
+            ShippingType shipping = ShippingType.NEXT_DAY;
+            cart.addItem(item);
+
+            double tax = TaxCalculator.calculate(cart.cost(), "IL");
+            double shippingCost = TotalCostCalculator.getShippingCost(shipping, cart.cost());
+            double cost = TotalCostCalculator.calculate(cart.cost(), "IL", ShippingType.NEXT_DAY);
+            Bill bill = new Bill(cart.cost(), shippingCost, tax, cost);
+            assertEquals(bill.total(), cost);
         }
 
     //Weak Robust Tests
@@ -110,6 +174,8 @@ public class TotalCostCalculationTest {
             assert(true);
         }
     }
+
+
 
     //Boundary Tests
 

@@ -2,51 +2,154 @@ package edu.depaul.se433.shoppingapp;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.mockito.Mock;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class ShoppingMocksDatabaseTest {
+
+    @Mock
+    transient PurchaseDBO mockPurchaseDBO;
+
     @Test
-    @DisplayName("Calculation Of Purchase W/Tax & Shipping")
-    void purchaseWithTaxAndShipping(){
-        PurchaseDBO mockPurchase = mock(PurchaseDBO.class);
-        PurchaseAgent mockAgent = new PurchaseAgent(mockPurchase);
-        ArrayList<Purchase> purchasesList = new ArrayList<>();
+    @DisplayName("Test For Average Purchase = purchase.getCost() ")
+    void testAgentAvgPurchase() throws IOException {
+        PurchaseDBO purchase = new PurchaseDBO();
+        PurchaseAgent testAgent = new PurchaseAgent(purchase);
 
-        Purchase purchase1 = Purchase.make("Matthew", LocalDate.of(
-                2020, 11, 11), 25.00, "IL", "STANDARD");
+        Purchase firstPurchase = new Purchase();
+        firstPurchase.setCost(25);
+        firstPurchase.setCustomerName("Person");
+        firstPurchase.setIdNum(12314);
+        firstPurchase.setPurchaseDate(LocalDate.now());
+        firstPurchase.setShipping("STANDARD");
+        firstPurchase.setState("IL");
 
-        Purchase purchase2 = Purchase.make("Daniel", LocalDate.of(
-                2020, 11, 11), 50.00, "IL", "NEXT_DAY");
+        Purchase secondPurchase = new Purchase();
+        secondPurchase.setCost(firstPurchase.getCost());
+        secondPurchase.setCustomerName(firstPurchase.getCustomerName());
+        secondPurchase.setIdNum(98765);
+        secondPurchase.setPurchaseDate(firstPurchase.getPurchaseDate());
+        secondPurchase.setShipping(firstPurchase.getShipping());
+        secondPurchase.setState(firstPurchase.getState());
 
-        purchasesList.add(purchase1);
-        purchasesList.add(purchase2);
+        testAgent.save(firstPurchase);
+        testAgent.save(secondPurchase);
 
-        when(mockPurchase.getPurchases()).thenReturn(purchasesList);
-        Double average = (purchase1.getCost() + purchase2.getCost()) / 2;
-        assertEquals(average, mockAgent.averagePurchase());
+        double avgPurchase = testAgent.averagePurchase();
+        double avgGetCost = (firstPurchase.getCost() + secondPurchase.getCost()) / 2;
+        assertEquals(avgPurchase, avgGetCost);
     }
 
     @Test
-    @DisplayName("Calculation Of Purchase W/ No Tax & No Shipping")
-    void purchaseWithNoTaxAndShipping(){
-        PurchaseDBO mockPurchase = mock(PurchaseDBO.class);
-        PurchaseAgent mockAgent = new PurchaseAgent(mockPurchase);
-        ArrayList<Purchase> purchasesList = new ArrayList<>();
+    @DisplayName("Tests the Purchase toString method")
+    void purchaseToStringEquivalence() throws IOException {
+        PurchaseDBO purchase= new PurchaseDBO();
+        PurchaseAgent testAgent = new PurchaseAgent(purchase);
 
-        Purchase purchase1 = Purchase.make("Matthew", LocalDate.of(
-                2020, 11, 11), 100.00, "AZ", "STANDARD");
+        Purchase firstPurchase = new Purchase();
+        firstPurchase.setCost(25);
+        firstPurchase.setCustomerName("Person");
+        firstPurchase.setIdNum(12314);
+        firstPurchase.setPurchaseDate(LocalDate.now());
+        firstPurchase.setShipping("STANDARD");
+        firstPurchase.setState("IL");
 
-        Purchase purchase2 = Purchase.make("Daniel", LocalDate.of(
-                2020, 11, 11), 200.00, "AZ", "STANDARD");
+        Purchase secondPurchase = new Purchase();
+        secondPurchase.setCost(firstPurchase.getCost());
+        secondPurchase.setCustomerName(firstPurchase.getCustomerName());
+        secondPurchase.setIdNum(98765);
+        secondPurchase.setPurchaseDate(firstPurchase.getPurchaseDate());
+        secondPurchase.setShipping(firstPurchase.getShipping());
+        secondPurchase.setState(firstPurchase.getState());
 
-        purchasesList.add(purchase1);
-        purchasesList.add(purchase2);
+        testAgent.save(firstPurchase);
+        testAgent.save(secondPurchase);
+        assertEquals(firstPurchase.toString(), secondPurchase.toString(), "Purchase toString Equality");
+    }
 
-        when(mockPurchase.getPurchases()).thenReturn(purchasesList);
-        Double average = (purchase1.getCost() + purchase2.getCost()) / 2;
-        assertEquals(average, mockAgent.averagePurchase());
+    @Test
+    @DisplayName("Valid ID number Check")
+    void purchaseIDEquivalence() throws IOException {
+        PurchaseDBO purchase= new PurchaseDBO();
+        PurchaseAgent testAgent = new PurchaseAgent(purchase);
+
+        Purchase firstPurchase = new Purchase();
+        firstPurchase.setCost(25);
+        firstPurchase.setCustomerName("Person");
+        firstPurchase.setIdNum(12314);
+        firstPurchase.setPurchaseDate(LocalDate.now());
+        firstPurchase.setShipping("STANDARD");
+        firstPurchase.setState("IL");
+
+        Purchase secondPurchase = new Purchase();
+        secondPurchase.setCost(firstPurchase.getCost());
+        secondPurchase.setCustomerName(firstPurchase.getCustomerName());
+        secondPurchase.setIdNum(12314);
+        secondPurchase.setPurchaseDate(firstPurchase.getPurchaseDate());
+        secondPurchase.setShipping(firstPurchase.getShipping());
+        secondPurchase.setState(firstPurchase.getState());
+
+        testAgent.save(firstPurchase);
+        testAgent.save(secondPurchase);
+        assertEquals(firstPurchase.getIdNum(), secondPurchase.getIdNum(), "ID Equality");
+    }
+    
+    @Test
+    @DisplayName("Tests testAgent.save() calls mock PurchaseDBO.save()")
+    void mockPurchaseDBOSave(){
+        mockPurchaseDBO = mock(PurchaseDBO.class);
+        PurchaseAgent testAgent = new PurchaseAgent(mockPurchaseDBO);
+        Purchase purchase = new Purchase();
+        purchase.setCost(25);
+        purchase.setCustomerName("Person");
+        purchase.setIdNum(12314);
+        purchase.setPurchaseDate(LocalDate.now());
+        purchase.setShipping("STANDARD");
+        purchase.setState("IL");
+        testAgent.save(purchase);
+        verify(mockPurchaseDBO).savePurchase(purchase);
+    }
+
+    @Test
+    @DisplayName("Tests testAgent.getPurchases() calls mock PurchaseDBO.getPurchases()")
+    void mockPurchaseDBOGetPurchases(){
+        mockPurchaseDBO = mock(PurchaseDBO.class);
+        PurchaseAgent testAgent = new PurchaseAgent(mockPurchaseDBO);
+        Purchase purchase = new Purchase();
+        purchase.setCost(25);
+        purchase.setCustomerName("Person");
+        purchase.setIdNum(12314);
+        purchase.setPurchaseDate(LocalDate.now());
+        purchase.setShipping("STANDARD");
+        purchase.setState("IL");
+        testAgent.save(purchase);
+        testAgent.getPurchases();
+        verify(mockPurchaseDBO).getPurchases();
+    }
+
+    @Test
+    @DisplayName("Checks that testAgent.avgPurchases() calls mock PurchaseDBO.getPurchases()")
+    void mockPurchaseDBOAvgPurchase(){
+        mockPurchaseDBO = mock(PurchaseDBO.class);
+        PurchaseAgent testAgent = new PurchaseAgent(mockPurchaseDBO);
+        Purchase purchase = new Purchase();
+        purchase.setCost(25);
+        purchase.setCustomerName("Person");
+        purchase.setIdNum(12314);
+        purchase.setPurchaseDate(LocalDate.now());
+        purchase.setShipping("STANDARD");
+        purchase.setState("IL");
+        testAgent.save(purchase);
+
+        testAgent.averagePurchase();
+        verify(mockPurchaseDBO).getPurchases();
     }
 }
+
+
+
